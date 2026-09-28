@@ -1,0 +1,327 @@
+* {
+    box-sizing: border-box;
+  }
+  
+  body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f4f4f4;
+    color: #111;
+  }
+  
+  button,
+  input {
+    font: inherit;
+  }
+  
+  button {
+    cursor: pointer;
+  }
+  
+  /* APP */
+  
+  .app {
+    width: 100%;
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 30px;
+  }
+  
+  
+  /* HEADER */
+  
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 40px;
+  }
+  
+  .header h1 {
+    margin: 0;
+    font-size: 28px;
+  }
+  
+  #progress {
+    margin: 7px 0 0;
+    color: #777;
+    font-size: 14px;
+  }
+  
+  
+  /* SEARCH */
+  
+  .search {
+    margin-bottom: 35px;
+  }
+  
+  .search label {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 14px;
+    font-weight: 600;
+  }
+  
+  .search-row {
+    display: flex;
+    gap: 10px;
+  }
+  
+  #order-search {
+    width: 100%;
+    min-width: 0;
+    height: 50px;
+  
+    padding: 0 15px;
+  
+    border: 1px solid #ccc;
+    border-radius: 10px;
+  
+    background: #fff;
+  
+    font-size: 18px;
+  
+    outline: none;
+  }
+  
+  #order-search:focus {
+    border-color: #111;
+  }
+  
+  #search-button {
+    height: 50px;
+    padding: 0 24px;
+  
+    border: 0;
+    border-radius: 10px;
+  
+    background: #111;
+    color: #fff;
+  
+    font-weight: 600;
+  }
+  
+  
+  /* ORDERS */
+  
+  .orders {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .order-card {
+    background: #fff;
+    border-radius: 14px;
+    padding: 18px 20px;
+  }
+  
+  .order-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+  
+  .order-number {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  
+    min-width: 90px;
+    padding: 8px 14px;
+  
+    background: #111;
+    color: #fff;
+  
+    border-radius: 9px;
+  
+    font-size: 25px;
+    font-weight: 800;
+    letter-spacing: 1px;
+  }
+  
+  .shop-name {
+    font-size: 11px;
+    color: #999;
+    font-weight: 400;
+  }
+  
+  
+  /* PRODUCT */
+  
+  .product {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+  
+    padding: 9px 0;
+  }
+  
+  .product + .product {
+    border-top: 1px solid #eee;
+  }
+  
+  .product-name {
+    font-size: 19px;
+    font-weight: 700;
+    line-height: 1.25;
+  }
+  
+  .product-info {
+    flex-shrink: 0;
+  
+    font-size: 18px;
+    font-weight: 700;
+    color: #111;
+  }
+  
+  
+  /* UNKNOWN PRODUCT */
+  
+  .product.unknown {
+    display: block;
+  
+    padding: 12px;
+  
+    border-radius: 8px;
+  
+    background: #f2f2f2;
+  }
+  
+  .unknown-title {
+    margin-bottom: 5px;
+  
+    font-size: 14px;
+    font-weight: 700;
+  }
+  
+  .unknown-sku {
+    font-size: 12px;
+    color: #666;
+  }
+  
+  
+  /* PAGINATION */
+  
+  .pagination {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+  
+    margin-top: 30px;
+  }
+  
+  .pagination button {
+    min-width: 130px;
+    height: 48px;
+  
+    padding: 0 20px;
+  
+    border: 1px solid #ccc;
+    border-radius: 10px;
+  
+    background: #fff;
+    color: #111;
+  
+    font-weight: 600;
+  }
+  
+  .pagination button:disabled {
+    opacity: 0.35;
+    cursor: default;
+  }
+  
+  #next-button {
+    background: #111;
+    border-color: #111;
+    color: #fff;
+  }
+  
+  
+  /* PAGE SIZE */
+  
+  .page-size {
+    margin-top: 35px;
+    padding-top: 25px;
+  
+    border-top: 1px solid #ddd;
+  
+    text-align: center;
+  }
+  
+  .page-size > span {
+    display: block;
+  
+    margin-bottom: 12px;
+  
+    color: #777;
+    font-size: 13px;
+  }
+  
+  .page-size-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+  }
+  
+  .page-size-buttons button {
+    width: 45px;
+    height: 40px;
+  
+    border: 1px solid #ccc;
+    border-radius: 8px;
+  
+    background: #fff;
+    color: #111;
+  }
+  
+  .page-size-buttons button.active {
+    background: #111;
+    border-color: #111;
+    color: #fff;
+  }
+  
+  
+  /* MOBILE */
+  
+  @media (max-width: 600px) {
+  
+    .app {
+      padding: 20px 15px;
+    }
+  
+    .header {
+      margin-bottom: 30px;
+    }
+  
+    .header h1 {
+      font-size: 24px;
+    }
+  
+    .search-row {
+      flex-direction: column;
+    }
+  
+    #search-button {
+      width: 100%;
+    }
+  
+    .order-card {
+      padding: 16px;
+    }
+  
+    .order-number {
+      font-size: 22px;
+    }
+  
+    .product {
+      align-items: flex-start;
+    }
+  
+    .pagination button {
+      flex: 1;
+      min-width: 0;
+    }
+  }
