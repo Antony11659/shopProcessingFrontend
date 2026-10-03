@@ -161,7 +161,7 @@ productSearch.addEventListener("input", (event) => {
 
 
 addProductBtn.addEventListener("click", () => {
-  console.log("Add perfume");
+  window.location.href = "./addProduct.html";
 });
 
 

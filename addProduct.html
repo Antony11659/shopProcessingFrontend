@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Добавить товар — La De Parfum</title>
+
+  <link rel="stylesheet" href="./css/addProduct.css">
+</head>
+
+<body>
+
+  <main class="app">
+
+    <header class="header">
+      <button id="backBtn" class="back-button">
+        ← Назад к товарам
+      </button>
+    </header>
+
+
+    <section class="title-section">
+      <div>
+        <div class="eyebrow">LA DE PARFUM</div>
+        <h1>Новый аромат</h1>
+      </div>
+    </section>
+
+
+    <form id="productForm">
+
+      <section class="card">
+
+        <h2>Основная информация</h2>
+
+
+        <div class="form-grid">
+
+          <div class="form-field">
+
+            <label for="brand">
+              Бренд
+            </label>
+
+            <select
+              id="brand"
+              name="brand_id"
+              required
+            >
+              <option value="">
+                Загружаем бренды...
+              </option>
+            </select>
+
+            <button
+              id="showBrandFormBtn"
+              type="button"
+              class="text-button"
+            >
+              + Новый бренд
+            </button>
+
+          </div>
+
+
+          <div class="form-field">
+
+            <label for="name">
+              Название
+            </label>
+
+            <input
+              id="name"
+              name="name"
+              type="text"
+              placeholder="Например, Imagination"
+              autocomplete="off"
+              required
+            >
+
+          </div>
+
+
+          <div class="form-field">
+
+            <label for="gender">
+              Пол
+            </label>
+
+            <select
+              id="gender"
+              name="gender"
+              required
+            >
+
+              <option value="U">
+                Унисекс
+              </option>
+
+              <option value="M">
+                Мужской
+              </option>
+
+              <option value="W">
+                Женский
+              </option>
+
+            </select>
+
+          </div>
+
+
+          <div class="form-field">
+
+            <label for="fragranceFamily">
+              Семейство
+            </label>
+
+            <input
+              id="fragranceFamily"
+              name="fragrance_family"
+              type="text"
+              placeholder="Например, Citrus Aromatic"
+              autocomplete="off"
+            >
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <section
+        id="newBrandCard"
+        class="card brand-card hidden"
+      >
+
+        <div class="section-header">
+
+          <h2>Новый бренд</h2>
+
+          <button
+            id="cancelBrandBtn"
+            type="button"
+            class="close-button"
+          >
+            Отмена
+          </button>
+
+        </div>
+
+
+        <div class="form-grid">
+
+          <div class="form-field">
+
+            <label for="newBrandName">
+              Название бренда
+            </label>
+
+            <input
+              id="newBrandName"
+              type="text"
+              placeholder="Например, Louis Vuitton"
+              autocomplete="off"
+            >
+
+          </div>
+
+
+          <div class="form-field">
+
+            <label for="newBrandCountry">
+              Страна
+            </label>
+
+            <input
+              id="newBrandCountry"
+              type="text"
+              placeholder="Например, France"
+              autocomplete="off"
+            >
+
+          </div>
+
+        </div>
+
+
+        <div class="brand-actions">
+
+          <span id="brandStatus"></span>
+
+          <button
+            id="createBrandBtn"
+            type="button"
+            class="secondary-button"
+          >
+            Создать бренд
+          </button>
+
+        </div>
+
+      </section>
+
+
+      <section class="card volumes-card">
+
+        <h2>Объёмы</h2>
+
+        <p class="description">
+          Эти объёмы будут созданы автоматически.
+        </p>
+
+        <div class="volumes">
+          <span>1 мл</span>
+          <span>3 мл</span>
+          <span>5 мл</span>
+          <span>10 мл</span>
+          <span>20 мл</span>
+          <span>30 мл</span>
+          <span>50 мл</span>
+        </div>
+
+      </section>
+
+
+      <div class="page-actions">
+
+        <span id="productStatus"></span>
+
+        <button
+          id="createProductBtn"
+          type="submit"
+          class="primary-button"
+        >
+          Создать товар
+        </button>
+
+      </div>
+
+    </form>
+
+  </main>
+
+
+  <script src="./js/addProduct.js"></script>
+
+</body>
+</html>
