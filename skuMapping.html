@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Проверка SKU</title>
+
+  <link rel="stylesheet" href="./css/skuMapping.css">
+</head>
+
+<body>
+
+  <div class="app">
+
+    <header class="header">
+      <div>
+        <button id="backBtn" class="back-button">
+          ← Товары
+        </button>
+
+        <h1>Проверка SKU</h1>
+
+        <p>
+          Товары Ozon, которые ещё не привязаны к базе.
+        </p>
+      </div>
+    </header>
+
+
+    <section class="card">
+
+      <label for="shopSelect">
+        Магазин
+      </label>
+
+      <select id="shopSelect">
+        <option value="">
+          Выберите магазин
+        </option>
+      </select>
+
+    </section>
+
+
+    <section
+      id="statsCard"
+      class="stats-card hidden"
+    >
+
+      <div class="stat">
+        <span>Ozon</span>
+        <strong id="ozonCount">0</strong>
+      </div>
+
+      <div class="stat">
+        <span>В базе</span>
+        <strong id="mappedCount">0</strong>
+      </div>
+
+      <div class="stat warning">
+        <span>Не привязано</span>
+        <strong id="missingCount">0</strong>
+      </div>
+
+    </section>
+
+
+    <section>
+
+      <div class="section-header">
+        <h2>Неизвестные SKU</h2>
+      </div>
+
+      <div id="productsList">
+
+        <div class="empty-state">
+          Выберите магазин
+        </div>
+
+      </div>
+
+    </section>
+
+  </div>
+
+
+  <script src="./js/skuMapping.js"></script>
+
+</body>
+</html>
