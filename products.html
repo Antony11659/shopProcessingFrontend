@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Товары — La De Parfum</title>
+
+  <link rel="stylesheet" href="./css/products.css">
+</head>
+
+<body>
+
+  <main class="app">
+
+    <header class="header">
+      <div>
+        <p class="eyebrow">LA DE PARFUM</p>
+        <h1>Товары</h1>
+      </div>
+
+      <button id="addProductBtn" class="primary-button">
+        + Добавить товар
+      </button>
+    </header>
+
+    <section class="search-section">
+
+      <label for="productSearch">
+        Найти аромат
+      </label>
+
+      <input
+        id="productSearch"
+        type="search"
+        placeholder="Название, бренд или SKU..."
+        autocomplete="off"
+      >
+
+    </section>
+
+    <section class="products-section">
+
+      <div class="section-header">
+        <h2>Ароматы</h2>
+        <span id="productCount">0 товаров</span>
+      </div>
+
+      <div id="productsList" class="products-list">
+
+        <div class="empty-state">
+          Здесь появятся товары из базы данных.
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+  <script src="./js/products.js"></script>
+</body>
+</html>
