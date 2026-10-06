@@ -4,9 +4,7 @@
 
 body {
   margin: 0;
-
   font-family: Arial, sans-serif;
-
   background: #f5f5f5;
   color: #111;
 }
@@ -20,7 +18,6 @@ select {
 .app {
   width: 100%;
   max-width: 1000px;
-
   margin: 0 auto;
   padding: 32px 24px 80px;
 }
@@ -36,25 +33,20 @@ select {
 
 .header h1 {
   margin: 18px 0 8px;
-
   font-size: 30px;
 }
 
 .header p {
   margin: 0;
-
   color: #777;
   font-size: 14px;
 }
 
 .back-button {
   padding: 0;
-
   border: 0;
   background: transparent;
-
   color: #666;
-
   cursor: pointer;
 }
 
@@ -70,18 +62,14 @@ select {
 .card {
   padding: 22px;
   margin-bottom: 20px;
-
   background: white;
-
   border: 1px solid #e5e5e5;
   border-radius: 16px;
 }
 
 .card label {
   display: block;
-
   margin-bottom: 8px;
-
   font-size: 13px;
   font-weight: 700;
 }
@@ -89,14 +77,10 @@ select {
 .card select {
   width: 100%;
   height: 46px;
-
   padding: 0 12px;
-
   background: white;
-
   border: 1px solid #d8d8d8;
   border-radius: 9px;
-
   outline: none;
 }
 
@@ -112,32 +96,23 @@ select {
 .stats-card {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-
   gap: 1px;
-
   margin-bottom: 32px;
-
   overflow: hidden;
-
   background: #e5e5e5;
-
   border: 1px solid #e5e5e5;
   border-radius: 16px;
 }
 
 .stat {
   padding: 20px;
-
   background: white;
 }
 
 .stat span {
   display: block;
-
   margin-bottom: 8px;
-
   color: #777;
-
   font-size: 12px;
 }
 
@@ -155,27 +130,24 @@ select {
 
 
 /* =========================
-   PRODUCTS SECTION
+   PRODUCTS
 ========================= */
 
 .section-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-
   margin-bottom: 14px;
 }
 
 .section-header h2 {
   margin: 0;
-
   font-size: 20px;
 }
 
 #productsList {
   display: flex;
   flex-direction: column;
-
   gap: 10px;
 }
 
@@ -186,9 +158,7 @@ select {
 
 .product-card {
   overflow: visible;
-
   background: white;
-
   border: 1px solid #e5e5e5;
   border-radius: 12px;
 
@@ -206,11 +176,9 @@ select {
     120px;
 
   gap: 20px;
-
   align-items: center;
 
   min-height: 72px;
-
   padding: 16px 20px;
 }
 
@@ -221,7 +189,6 @@ select {
 .offer-id {
   font-size: 15px;
   font-weight: 700;
-
   overflow-wrap: anywhere;
 }
 
@@ -237,9 +204,7 @@ select {
     monospace;
 
   font-size: 13px;
-
   text-align: right;
-
   overflow-wrap: anywhere;
 }
 
@@ -254,7 +219,6 @@ select {
 
 .map-button {
   height: 38px;
-
   padding: 0 14px;
 
   border: 1px solid #111;
@@ -264,7 +228,6 @@ select {
   color: white;
 
   font-weight: 700;
-
   cursor: pointer;
 }
 
@@ -279,9 +242,7 @@ select {
 
 .mapping-form {
   padding: 20px;
-
   background: #fafafa;
-
   border-top: 1px solid #e5e5e5;
   border-radius: 0 0 12px 12px;
 }
@@ -290,16 +251,13 @@ select {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-
   gap: 20px;
-
   margin-bottom: 20px;
 }
 
 .mapping-header > div {
   display: flex;
   flex-direction: column;
-
   gap: 4px;
 }
 
@@ -309,21 +267,15 @@ select {
 
 .mapping-header span {
   color: #777;
-
   font-size: 12px;
 }
 
 .close-button {
   padding: 0;
-
   border: 0;
-
   background: transparent;
-
   color: #777;
-
   font-size: 25px;
-
   cursor: pointer;
 }
 
@@ -333,7 +285,7 @@ select {
 
 
 /* =========================
-   FORM
+   MAPPING FORM FIELDS
 ========================= */
 
 .sku-map-form {
@@ -352,9 +304,7 @@ select {
 
 .field label {
   display: block;
-
   margin-bottom: 7px;
-
   font-size: 12px;
   font-weight: 700;
 }
@@ -363,14 +313,12 @@ select {
 .field select {
   width: 100%;
   height: 44px;
-
   padding: 0 12px;
 
   border: 1px solid #d8d8d8;
   border-radius: 8px;
 
   background: white;
-
   outline: none;
 }
 
@@ -395,7 +343,6 @@ select {
 
 .perfume-results {
   position: absolute;
-
   z-index: 20;
 
   top: 70px;
@@ -403,11 +350,9 @@ select {
   right: 0;
 
   max-height: 320px;
-
   overflow-y: auto;
 
   background: white;
-
   border: 1px solid #ddd;
   border-radius: 9px;
 
@@ -418,20 +363,16 @@ select {
 .perfume-option {
   display: flex;
   flex-direction: column;
-
   gap: 3px;
 
   width: 100%;
-
   padding: 11px 13px;
 
   border: 0;
   border-bottom: 1px solid #eee;
 
   background: white;
-
   text-align: left;
-
   cursor: pointer;
 }
 
@@ -449,16 +390,43 @@ select {
 
 .perfume-option span {
   color: #777;
-
   font-size: 11px;
 }
 
+
+/* =========================
+   NO SEARCH RESULTS
+========================= */
+
 .no-results {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+
   padding: 15px;
 
   color: #777;
-
   font-size: 13px;
+}
+
+.create-from-search-button {
+  padding: 7px 10px;
+
+  border: 1px solid #ddd;
+  border-radius: 7px;
+
+  background: #f7f7f7;
+
+  font-size: 11px;
+  font-weight: 700;
+
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.create-from-search-button:hover {
+  background: #eee;
 }
 
 
@@ -468,11 +436,9 @@ select {
 
 .selected-perfume {
   margin-top: 8px;
-
   padding: 10px 12px;
 
   background: white;
-
   border: 1px solid #ddd;
   border-radius: 8px;
 }
@@ -488,15 +454,13 @@ select {
 
 .selected-perfume span {
   margin-top: 3px;
-
   color: #777;
-
   font-size: 11px;
 }
 
 
 /* =========================
-   FORM ACTIONS
+   MAPPING ACTIONS
 ========================= */
 
 .mapping-actions {
@@ -504,26 +468,22 @@ select {
 
   display: flex;
   justify-content: flex-end;
-
   gap: 10px;
 }
 
 .primary-button,
 .secondary-button {
   height: 40px;
-
   padding: 0 16px;
 
   border-radius: 8px;
 
   font-weight: 700;
-
   cursor: pointer;
 }
 
 .primary-button {
   border: 1px solid #111;
-
   background: #111;
   color: white;
 }
@@ -534,15 +494,12 @@ select {
 
 .primary-button:disabled {
   border-color: #ccc;
-
   background: #ccc;
-
   cursor: default;
 }
 
 .secondary-button {
   border: 1px solid #ddd;
-
   background: white;
   color: #333;
 }
@@ -553,12 +510,156 @@ select {
 
 
 /* =========================
+   CREATE PERFUME
+========================= */
+
+.create-perfume-container {
+  margin-top: 20px;
+}
+
+.create-perfume-box {
+  padding: 20px;
+
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+}
+
+.create-perfume-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.create-perfume-header > div {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.create-perfume-header strong {
+  font-size: 17px;
+}
+
+.create-perfume-header span {
+  color: #777;
+  font-size: 12px;
+}
+
+.create-perfume-form {
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  gap: 18px;
+}
+
+.brand-field {
+  position: relative;
+}
+
+.text-button {
+  margin-top: 7px;
+  padding: 0;
+
+  border: 0;
+  background: transparent;
+
+  color: #555;
+
+  font-size: 12px;
+  font-weight: 700;
+
+  cursor: pointer;
+}
+
+.text-button:hover {
+  color: #111;
+}
+
+.create-perfume-actions {
+  grid-column: 1 / -1;
+
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.create-perfume-message {
+  grid-column: 1 / -1;
+  font-size: 13px;
+}
+
+
+/* =========================
+   CREATE BRAND
+========================= */
+
+.create-brand-container {
+  grid-column: 1 / -1;
+}
+
+.create-brand-box {
+  padding: 16px;
+
+  background: #f7f7f7;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+}
+
+.create-brand-box > strong {
+  display: block;
+  margin-bottom: 12px;
+  font-size: 14px;
+}
+
+.create-brand-fields {
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  gap: 12px;
+}
+
+.create-brand-fields input {
+  width: 100%;
+  height: 42px;
+  padding: 0 12px;
+
+  border: 1px solid #d8d8d8;
+  border-radius: 8px;
+
+  background: white;
+  outline: none;
+}
+
+.create-brand-fields input:focus {
+  border-color: #999;
+}
+
+.create-brand-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.create-brand-message {
+  margin-top: 10px;
+  font-size: 13px;
+}
+
+
+/* =========================
    MESSAGES
 ========================= */
 
 .form-message {
   grid-column: 1 / -1;
-
   font-size: 13px;
 }
 
@@ -568,7 +669,7 @@ select {
 
 
 /* =========================
-   STATES
+   EMPTY / ERROR STATES
 ========================= */
 
 .empty-state {
@@ -580,7 +681,6 @@ select {
   border-radius: 14px;
 
   color: #888;
-
   text-align: center;
 }
 
@@ -595,9 +695,13 @@ select {
   color: #b42318;
 }
 
+
+/* =========================
+   MAPPED ANIMATION
+========================= */
+
 .product-mapped {
   opacity: 0;
-
   transform: translateX(15px);
 }
 
@@ -609,22 +713,16 @@ select {
 @media (max-width: 650px) {
 
   .app {
-    padding:
-      22px
-      16px
-      60px;
+    padding: 22px 16px 60px;
   }
-
 
   .header h1 {
     font-size: 25px;
   }
 
-
   .stats-card {
     grid-template-columns: 1fr;
   }
-
 
   .product-row {
     grid-template-columns:
@@ -634,39 +732,49 @@ select {
     gap: 12px;
   }
 
-
   .desktop-sku {
     display: none;
   }
 
-
   .mobile-sku {
     display: block;
-
     margin-top: 5px;
-
     text-align: left;
   }
-
 
   .map-button {
     padding: 0 12px;
   }
 
-
   .sku-map-form {
     grid-template-columns: 1fr;
   }
 
-
   .mapping-actions {
     grid-column: 1;
-
     justify-content: stretch;
   }
 
-
   .mapping-actions button {
     flex: 1;
+  }
+
+  .create-perfume-form {
+    grid-template-columns: 1fr;
+  }
+
+  .create-perfume-actions,
+  .create-perfume-message,
+  .create-brand-container {
+    grid-column: 1;
+  }
+
+  .create-brand-fields {
+    grid-template-columns: 1fr;
+  }
+
+  .no-results {
+    align-items: flex-start;
+    flex-direction: column;
   }
 }

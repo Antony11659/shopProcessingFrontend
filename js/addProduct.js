@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:3000";
+const API_URL = "https://antony11659-perfumestorebackend-e001.twc1.net";
 
 
 const productForm =
