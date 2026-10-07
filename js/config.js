@@ -1,6 +1,4 @@
-const isDev =
-  window.location.hostname === "localhost" ||
-  window.location.hostname === "127.0.0.1";
+const isDev = new URLSearchParams(window.location.search).get("env") === "dev";
 
 window.API_URL = isDev
   ? "http://localhost:3000"
