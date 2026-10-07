@@ -1,4 +1,4 @@
-const API_URL = "https://antony11659-perfumestorebackend-e001.twc1.net";
+const API_URL = window.API_URL;
 
 const productContent = document.querySelector("#productContent");
 const backBtn = document.querySelector("#backBtn");

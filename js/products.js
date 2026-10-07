@@ -3,8 +3,7 @@ const productCount = document.querySelector("#productCount");
 const productSearch = document.querySelector("#productSearch");
 const addProductBtn = document.querySelector("#addProductBtn");
 
-// Change this if your backend URL is different.
-const API_URL = "https://antony11659-perfumestorebackend-e001.twc1.net";
+const API_URL = window.API_URL;
 
 let perfumes = [];
 
