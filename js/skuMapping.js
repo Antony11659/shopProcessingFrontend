@@ -165,6 +165,8 @@ async function loadShops() {
         ${escapeHtml(error.message)}
       </div>
     `;
+
+    return false;
   }
 }
 
@@ -230,6 +232,12 @@ async function loadPrintingProducts() {
 
 
   } catch (error) {
+
+    console.error(
+      "LOAD PRINTING PRODUCTS ERROR:",
+      error
+    );
+
 
     productsList.innerHTML = `
       <div class="error-state">
@@ -492,7 +500,6 @@ function renderProducts(products) {
 
       productsList.innerHTML = `
         <div class="empty-state">
-
           <strong>
             ✓ Все SKU текущей партии привязаны
           </strong>
@@ -506,9 +513,8 @@ function renderProducts(products) {
             type="button"
             data-action="start-printing"
           >
-            НАЧАТЬ ПЕЧАТЬ
+            🖨️ НАЧАТЬ ПЕЧАТЬ
           </button>
-
         </div>
       `;
 
@@ -638,14 +644,8 @@ productsList.addEventListener(
       action === "start-printing"
     ) {
 
-      const isDev =
-        params.get("env") === "dev";
-
-
-      window.location.href = isDev
-        ? "./localPrint.html?env=dev"
-        : "./localPrint.html";
-
+      window.location.href =
+        "http://127.0.0.1:3000/";
 
       return;
     }
@@ -711,6 +711,7 @@ productsList.addEventListener(
 
       hideCreateBrandForm(sku);
 
+      return;
     }
 
   }

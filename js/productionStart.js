@@ -16,44 +16,59 @@ ozonReadyButton.addEventListener(
     status.className = "";
 
     status.textContent =
-      "Подготавливаем производственную партию...";
+      "Создаём производственную партию...";
 
 
     try {
 
       // ==========================================
       // 1. CREATE NEW PRODUCTION SESSION
-      // DEVELOPMENT MODE
       // ==========================================
 
-      /*
-       * TODO BEFORE PRODUCTION:
-       *
-       * Here we must create a NEW Ozon session:
-       *
-       * POST /ozon/session
-       *
-       * For now we intentionally DO NOT create
-       * a new session because we are developing
-       * against the existing current session.
-       */
+      const sessionResponse =
+        await fetch(
+          `${API_URL}/ozon/session`,
+          {
+            method: "POST",
+          }
+        );
+
+
+      const sessionResult =
+        await sessionResponse
+          .json()
+          .catch(() => null);
+
+
+      if (!sessionResponse.ok) {
+
+        throw new Error(
+          sessionResult?.message ||
+          sessionResult?.error ||
+          "Не удалось создать производственную партию"
+        );
+
+      }
+
 
       console.log(
-        "[DEV] POST /ozon/session would happen here"
+        "PRODUCTION SESSION CREATED:",
+        sessionResult
       );
 
 
       // ==========================================
-      // 2. CHECK CURRENT SESSION PRODUCTS
+      // 2. CHECK PRODUCTS FROM NEW SESSION
       // ==========================================
 
       status.textContent =
         "Проверяем товары текущей партии...";
 
 
-      const labelsResponse = await fetch(
-        `${API_URL}/ozon/print-sticking-labels`
-      );
+      const labelsResponse =
+        await fetch(
+          `${API_URL}/ozon/print-sticking-labels`
+        );
 
 
       const labelsResult =
@@ -73,9 +88,6 @@ ozonReadyButton.addEventListener(
       }
 
 
-      // Backend must always return unknownProducts
-      // as an array.
-
       if (
         !Array.isArray(
           labelsResult?.unknownProducts
@@ -90,13 +102,13 @@ ozonReadyButton.addEventListener(
 
 
       console.log(
-        "[DEV] Unknown products:",
+        "UNKNOWN PRODUCTS:",
         labelsResult.unknownProducts
       );
 
 
       // ==========================================
-      // 3. DECIDE WHERE WORKER GOES NEXT
+      // 3. UNKNOWN SKU → MAPPING
       // ==========================================
 
       if (
@@ -104,31 +116,29 @@ ozonReadyButton.addEventListener(
       ) {
 
         console.log(
-          `[DEV] Found ${labelsResult.unknownProducts.length} unknown products`
+          `Found ${labelsResult.unknownProducts.length} unknown products`
         );
 
-
-        // Worker must map unknown SKUs first.
 
         window.location.href =
           "./skuMapping.html?mode=printing";
 
-        return;
 
+        return;
       }
 
 
       // ==========================================
-      // 4. EVERYTHING IS READY FOR PRINTING
+      // 4. EVERYTHING READY → LOCAL PRINTER
       // ==========================================
 
       console.log(
-        "[DEV] All products are mapped. Going to local print."
+        "All products are mapped. Opening local printer."
       );
 
 
       window.location.href =
-        "./localPrint.html";
+        "http://127.0.0.1:3000/";
 
 
     } catch (error) {
@@ -148,8 +158,8 @@ ozonReadyButton.addEventListener(
         "error";
 
 
-      ozonReadyButton.disabled = false;
-
+      ozonReadyButton.disabled =
+        false;
     }
 
   }
