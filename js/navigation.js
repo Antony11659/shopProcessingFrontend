@@ -15,6 +15,13 @@
       page: "skuMapping.html",
       icon: '<path d="M4 4h6l10 10-6 6L4 10z"/><circle cx="8" cy="8" r="1"/>',
     },
+    {
+
+      label: "Поклейка",
+      page: "sticking.html",  
+      icon: '<path d="M7 3h10v4h4v14H3V7h4V3z"/><path d="M7 7h10"/><path d="M8 12h8"/><path d="M8 16h5"/>',
+    
+    },
   ];
 
   const currentPage = window.location.pathname.split("/").pop() || "index.html";
