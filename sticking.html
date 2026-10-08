@@ -1,0 +1,1020 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>Подготовка флаконов</title>
+
+
+  <style>
+
+    * {
+      box-sizing: border-box;
+    }
+
+
+    body {
+      margin: 0;
+
+      font-family:
+        Arial,
+        sans-serif;
+
+      background: #f4f4f4;
+
+      color: #111;
+    }
+
+
+    .app {
+      max-width: 700px;
+
+      margin: 0 auto;
+
+      padding: 30px;
+    }
+
+
+    .header {
+      display: flex;
+
+      justify-content: space-between;
+
+      align-items: center;
+
+      margin-bottom: 50px;
+    }
+
+
+    .header h1 {
+      margin: 0;
+
+      font-size: 24px;
+    }
+
+
+    #progress {
+      color: #777;
+
+      font-size: 18px;
+    }
+
+
+    .card {
+      background: white;
+
+      border-radius: 24px;
+
+      padding: 40px;
+
+      text-align: center;
+    }
+
+
+    #perfumeName {
+      margin: 0;
+
+      font-size: 42px;
+    }
+
+
+    #total {
+      margin-top: 10px;
+
+      color: #777;
+
+      font-size: 20px;
+    }
+
+
+    #bottles {
+      margin: 40px 0;
+    }
+
+
+    .bottle {
+      display: flex;
+
+      justify-content: space-between;
+
+      padding: 15px 20px;
+
+      border-bottom:
+        1px solid #eee;
+
+      font-size: 26px;
+    }
+
+
+    .quantity {
+      font-weight: bold;
+    }
+
+
+    /* =====================================================
+       NAVIGATION
+    ===================================================== */
+
+    .navigation {
+      display: flex;
+
+      gap: 12px;
+    }
+
+
+    #backButton,
+    #nextButton {
+      border: 0;
+
+      border-radius: 16px;
+
+      padding: 20px;
+
+      font-size: 22px;
+
+      font-weight: bold;
+
+      cursor: pointer;
+    }
+
+
+    #backButton {
+      width: 30%;
+
+      background: #e8e8e8;
+
+      color: #111;
+    }
+
+
+    #nextButton {
+      width: 70%;
+
+      background: #111;
+
+      color: white;
+    }
+
+
+    #backButton:disabled {
+      opacity: 0.35;
+
+      cursor: default;
+    }
+
+
+    #nextButton:disabled {
+      opacity: 0.5;
+
+      cursor: default;
+    }
+
+
+    .error {
+      color: #c62828;
+    }
+
+
+    @media (max-width: 600px) {
+
+      .app {
+        padding: 20px;
+      }
+
+
+      .header {
+        margin-bottom: 30px;
+      }
+
+
+      .card {
+        padding: 30px 20px;
+      }
+
+
+      #perfumeName {
+        font-size: 34px;
+      }
+
+
+      .bottle {
+        font-size: 22px;
+
+        padding:
+          15px 10px;
+      }
+
+
+      #backButton,
+      #nextButton {
+        font-size: 18px;
+
+        padding: 18px 12px;
+      }
+
+    }
+
+  </style>
+
+</head>
+
+
+<body>
+
+  <main class="app">
+
+    <div class="header">
+
+      <h1>
+        Подготовка флаконов
+      </h1>
+
+
+      <div id="progress"></div>
+
+    </div>
+
+
+    <div class="card">
+
+      <h2 id="perfumeName">
+        Загрузка...
+      </h2>
+
+
+      <div id="total"></div>
+
+
+      <div id="bottles"></div>
+
+
+      <div class="navigation">
+
+        <button
+          id="backButton"
+          disabled
+        >
+          ← НАЗАД
+        </button>
+
+
+        <button
+          id="nextButton"
+          disabled
+        >
+          ✓ ГОТОВО — ДАЛЕЕ
+        </button>
+
+      </div>
+
+    </div>
+
+  </main>
+
+
+  <!-- =====================================================
+       SHARED FRONTEND CONFIG
+
+       DEV:
+       ?env=dev
+       → http://localhost:3000
+
+       PROD:
+       → deployed backend
+  ====================================================== -->
+
+  <script src="./js/config.js"></script>
+
+
+  <script>
+
+    /* =====================================================
+       CONFIG
+    ===================================================== */
+
+
+
+
+
+    const PACKAGING_URL =
+      "https://antony11659-shopprocessingfrontend-22fb.twc1.net/";
+
+
+    /* =====================================================
+       STATE
+    ===================================================== */
+
+    let plan;
+
+    let currentRegularIndex = 0;
+
+    let currentUniqueIndex = 0;
+
+    let stage = "loading";
+
+    let uniqueGroups = [];
+
+
+    /* =====================================================
+       ELEMENTS
+    ===================================================== */
+
+    const perfumeName =
+      document.querySelector(
+        "#perfumeName"
+      );
+
+
+    const total =
+      document.querySelector(
+        "#total"
+      );
+
+
+    const bottles =
+      document.querySelector(
+        "#bottles"
+      );
+
+
+    const progress =
+      document.querySelector(
+        "#progress"
+      );
+
+
+    const backButton =
+      document.querySelector(
+        "#backButton"
+      );
+
+
+    const nextButton =
+      document.querySelector(
+        "#nextButton"
+      );
+
+
+    /* =====================================================
+       TOTAL NUMBER OF STEPS
+    ===================================================== */
+
+    function getTotalSteps() {
+
+      return (
+        plan.regular.length +
+        uniqueGroups.length
+      );
+    }
+
+
+    /* =====================================================
+       LOAD STICKING PLAN
+
+       IMPORTANT:
+
+       Reads the EXISTING production session.
+
+       It does NOT create a new Ozon session.
+
+       Backend already returns regular perfumes in
+       the same order used by the printing list.
+    ===================================================== */
+
+    async function loadPlan() {
+
+      try {
+
+        const response =
+          await fetch(
+            `${API_URL}/ozon/sticking`
+          );
+
+
+        const data =
+          await response.json();
+
+
+        if (!response.ok) {
+
+          throw new Error(
+            data.error ||
+            data.message ||
+            "Не удалось загрузить план"
+          );
+        }
+
+
+        if (
+          !Array.isArray(data.regular)
+        ) {
+
+          throw new Error(
+            "Backend не вернул regular"
+          );
+        }
+
+
+        if (
+          !data.unique ||
+          typeof data.unique !== "object"
+        ) {
+
+          throw new Error(
+            "Backend не вернул unique"
+          );
+        }
+
+
+        plan = data;
+
+
+        console.log(
+          "STICKING PLAN:",
+          plan
+        );
+
+
+        /*
+         * IMPORTANT:
+         *
+         * DO NOT SORT HERE.
+         *
+         * Backend already gives us exactly
+         * the same perfume order that was
+         * used for printing.
+         */
+
+
+        /* -----------------------------------------------
+           UNIQUE PRODUCTS
+
+           Convert:
+
+           {
+             "3": ["Marfa", "Kirke"],
+             "5": ["Ani"]
+           }
+
+           into:
+
+           [
+             {
+               volume: "3",
+               names: ["Marfa", "Kirke"]
+             }
+           ]
+        ----------------------------------------------- */
+
+        uniqueGroups =
+          Object.entries(
+            plan.unique
+          ).map(
+            ([volume, names]) => ({
+              volume,
+              names,
+            })
+          );
+
+
+        /* -----------------------------------------------
+           START REGULAR
+        ----------------------------------------------- */
+
+        if (
+          plan.regular.length > 0
+        ) {
+
+          stage =
+            "regular";
+
+
+          currentRegularIndex =
+            0;
+
+
+          showCurrentRegular();
+
+
+          return;
+        }
+
+
+        /* -----------------------------------------------
+           NO REGULAR → START UNIQUE
+        ----------------------------------------------- */
+
+        if (
+          uniqueGroups.length > 0
+        ) {
+
+          stage =
+            "unique";
+
+
+          currentUniqueIndex =
+            0;
+
+
+          showCurrentUnique();
+
+
+          return;
+        }
+
+
+        /* -----------------------------------------------
+           NOTHING TO PREPARE
+        ----------------------------------------------- */
+
+        showFinished();
+
+
+      } catch (error) {
+
+        console.error(
+          "LOAD STICKING ERROR:",
+          error
+        );
+
+
+        stage =
+          "error";
+
+
+        perfumeName.textContent =
+          "Ошибка загрузки";
+
+
+        perfumeName.className =
+          "error";
+
+
+        total.textContent =
+          error.message ||
+          "Не удалось загрузить текущую сессию";
+
+
+        bottles.innerHTML =
+          "";
+
+
+        progress.textContent =
+          "";
+
+
+        backButton.disabled =
+          true;
+
+
+        nextButton.disabled =
+          true;
+      }
+
+    }
+
+
+    /* =====================================================
+       SHOW REGULAR PERFUME
+    ===================================================== */
+
+    function showCurrentRegular() {
+
+      const order =
+        plan.regular[
+          currentRegularIndex
+        ];
+
+
+      perfumeName.className =
+        "";
+
+
+      perfumeName.textContent =
+        order.name;
+
+
+      total.textContent =
+        `${order.total} флаконов`;
+
+
+      progress.textContent =
+        `${currentRegularIndex + 1} / ${getTotalSteps()}`;
+
+
+      bottles.innerHTML =
+        "";
+
+
+      /*
+       * Bottles are already ordered by backend.
+       *
+       * DO NOT SORT.
+       */
+
+      for (
+        const bottle
+        of order.bottles
+      ) {
+
+        const row =
+          document.createElement(
+            "div"
+          );
+
+
+        row.className =
+          "bottle";
+
+
+        row.innerHTML = `
+          <span>
+            ${bottle.volume} мл
+          </span>
+
+          <span class="quantity">
+            ${bottle.quantity} шт.
+          </span>
+        `;
+
+
+        bottles.appendChild(
+          row
+        );
+      }
+
+
+      backButton.disabled =
+        currentRegularIndex === 0;
+
+
+      nextButton.disabled =
+        false;
+
+
+      nextButton.textContent =
+        "✓ ГОТОВО — ДАЛЕЕ";
+    }
+
+
+    /* =====================================================
+       SHOW UNIQUE GROUP
+    ===================================================== */
+
+    function showCurrentUnique() {
+
+      const group =
+        uniqueGroups[
+          currentUniqueIndex
+        ];
+
+
+      perfumeName.className =
+        "";
+
+
+      perfumeName.textContent =
+        `ОДИНОЧНЫЕ — ${group.volume} МЛ`;
+
+
+      total.textContent =
+        `${group.names.length} флаконов`;
+
+
+      const currentStep =
+        plan.regular.length +
+        currentUniqueIndex +
+        1;
+
+
+      progress.textContent =
+        `${currentStep} / ${getTotalSteps()}`;
+
+
+      bottles.innerHTML =
+        "";
+
+
+      for (
+        const name
+        of group.names
+      ) {
+
+        const row =
+          document.createElement(
+            "div"
+          );
+
+
+        row.className =
+          "bottle";
+
+
+        row.innerHTML = `
+          <span>
+            ${name}
+          </span>
+
+          <span class="quantity">
+            ×1
+          </span>
+        `;
+
+
+        bottles.appendChild(
+          row
+        );
+      }
+
+
+      backButton.disabled =
+        false;
+
+
+      nextButton.disabled =
+        false;
+
+
+      nextButton.textContent =
+        "✓ ГОТОВО — ДАЛЕЕ";
+    }
+
+
+    /* =====================================================
+       FINISHED
+    ===================================================== */
+
+    function showFinished() {
+
+      stage =
+        "finished";
+
+
+      perfumeName.className =
+        "";
+
+
+      perfumeName.textContent =
+        "Поклейка завершена ✓";
+
+
+      total.textContent =
+        "Все флаконы подготовлены. Переходите к упаковке заказов.";
+
+
+      bottles.innerHTML =
+        "";
+
+
+      progress.textContent =
+        "";
+
+
+      backButton.disabled =
+        false;
+
+
+      nextButton.disabled =
+        false;
+
+
+      nextButton.textContent =
+        "ПЕРЕЙТИ К УПАКОВКЕ →";
+    }
+
+
+    /* =====================================================
+       BACK
+    ===================================================== */
+
+    backButton.addEventListener(
+      "click",
+      () => {
+
+        /* -----------------------------------------------
+           FINISHED
+        ----------------------------------------------- */
+
+        if (
+          stage === "finished"
+        ) {
+
+          if (
+            uniqueGroups.length > 0
+          ) {
+
+            stage =
+              "unique";
+
+
+            currentUniqueIndex =
+              uniqueGroups.length - 1;
+
+
+            showCurrentUnique();
+
+
+            return;
+          }
+
+
+          if (
+            plan.regular.length > 0
+          ) {
+
+            stage =
+              "regular";
+
+
+            currentRegularIndex =
+              plan.regular.length - 1;
+
+
+            showCurrentRegular();
+          }
+
+
+          return;
+        }
+
+
+        /* -----------------------------------------------
+           UNIQUE
+        ----------------------------------------------- */
+
+        if (
+          stage === "unique"
+        ) {
+
+          if (
+            currentUniqueIndex > 0
+          ) {
+
+            currentUniqueIndex--;
+
+
+            showCurrentUnique();
+
+
+            return;
+          }
+
+
+          if (
+            plan.regular.length > 0
+          ) {
+
+            stage =
+              "regular";
+
+
+            currentRegularIndex =
+              plan.regular.length - 1;
+
+
+            showCurrentRegular();
+          }
+
+
+          return;
+        }
+
+
+        /* -----------------------------------------------
+           REGULAR
+        ----------------------------------------------- */
+
+        if (
+          stage === "regular" &&
+          currentRegularIndex > 0
+        ) {
+
+          currentRegularIndex--;
+
+
+          showCurrentRegular();
+        }
+
+      }
+    );
+
+
+    /* =====================================================
+       NEXT
+    ===================================================== */
+
+    nextButton.addEventListener(
+      "click",
+      () => {
+
+        /* -----------------------------------------------
+           FINISHED → PACKAGING
+        ----------------------------------------------- */
+
+        if (
+          stage === "finished"
+        ) {
+
+          window.location.href =
+            PACKAGING_URL;
+
+
+          return;
+        }
+
+
+        /* -----------------------------------------------
+           REGULAR
+        ----------------------------------------------- */
+
+        if (
+          stage === "regular"
+        ) {
+
+          currentRegularIndex++;
+
+
+          if (
+            currentRegularIndex <
+            plan.regular.length
+          ) {
+
+            showCurrentRegular();
+
+
+            return;
+          }
+
+
+          if (
+            uniqueGroups.length > 0
+          ) {
+
+            stage =
+              "unique";
+
+
+            currentUniqueIndex =
+              0;
+
+
+            showCurrentUnique();
+
+          } else {
+
+            showFinished();
+          }
+
+
+          return;
+        }
+
+
+        /* -----------------------------------------------
+           UNIQUE
+        ----------------------------------------------- */
+
+        if (
+          stage === "unique"
+        ) {
+
+          currentUniqueIndex++;
+
+
+          if (
+            currentUniqueIndex <
+            uniqueGroups.length
+          ) {
+
+            showCurrentUnique();
+
+
+            return;
+          }
+
+
+          showFinished();
+        }
+
+      }
+    );
+
+
+    /* =====================================================
+       START
+    ===================================================== */
+
+    loadPlan();
+
+  </script>
+
+</body>
+
+</html>
