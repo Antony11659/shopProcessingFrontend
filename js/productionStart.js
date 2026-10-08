@@ -1,11 +1,22 @@
 const API_URL = window.API_URL;
 
+const LOCAL_PRINT_URL =
+  "http://127.0.0.1:3000/print.html";
+
+const SKU_MAPPING_URL =
+  "./skuMapping.html?mode=printing";
+
+
 const ozonReadyButton =
   document.querySelector("#ozonReadyButton");
 
 const status =
   document.querySelector("#status");
 
+
+/* =====================================================
+   START PRODUCTION
+===================================================== */
 
 ozonReadyButton.addEventListener(
   "click",
@@ -22,7 +33,7 @@ ozonReadyButton.addEventListener(
     try {
 
       // ==========================================
-      // 1. CREATE NEW PRODUCTION SESSION
+      // 1. CREATE NEW OZON SESSION
       // ==========================================
 
       const sessionResponse =
@@ -58,7 +69,7 @@ ozonReadyButton.addEventListener(
 
 
       // ==========================================
-      // 2. CHECK PRODUCTS FROM NEW SESSION
+      // 2. CHECK CURRENT SESSION PRODUCTS
       // ==========================================
 
       status.textContent =
@@ -101,27 +112,43 @@ ozonReadyButton.addEventListener(
       }
 
 
+      const unknownProducts =
+        labelsResult.unknownProducts;
+
+
       console.log(
         "UNKNOWN PRODUCTS:",
-        labelsResult.unknownProducts
+        unknownProducts
+      );
+
+
+      console.log(
+        "UNKNOWN PRODUCTS COUNT:",
+        unknownProducts.length
       );
 
 
       // ==========================================
-      // 3. UNKNOWN SKU → MAPPING
+      // 3. UNKNOWN SKU EXISTS
+      //    → OPEN SKU MAPPING
       // ==========================================
 
       if (
-        labelsResult.unknownProducts.length > 0
+        unknownProducts.length > 0
       ) {
 
+        status.textContent =
+          `Найдено неизвестных SKU: ${unknownProducts.length}`;
+
+
         console.log(
-          `Found ${labelsResult.unknownProducts.length} unknown products`
+          "Unknown SKU found. Opening SKU mapping."
         );
 
 
-        window.location.href =
-          "./skuMapping.html?mode=printing";
+        window.location.replace(
+          SKU_MAPPING_URL
+        );
 
 
         return;
@@ -129,16 +156,28 @@ ozonReadyButton.addEventListener(
 
 
       // ==========================================
-      // 4. EVERYTHING READY → LOCAL PRINTER
+      // 4. EVERYTHING IS MAPPED
+      //    → OPEN LOCAL PRINT PAGE
       // ==========================================
 
+      status.textContent =
+        "Все товары привязаны. Открываем печать...";
+
+
       console.log(
-        "All products are mapped. Opening local printer."
+        "NO UNKNOWN SKU."
       );
 
 
-      window.location.href =
-        "http://127.0.0.1:3000/";
+      console.log(
+        "REDIRECTING TO:",
+        LOCAL_PRINT_URL
+      );
+
+
+      window.location.replace(
+        LOCAL_PRINT_URL
+      );
 
 
     } catch (error) {
@@ -150,7 +189,7 @@ ozonReadyButton.addEventListener(
 
 
       status.textContent =
-        error.message ||
+        error?.message ||
         "Не удалось начать производственную партию";
 
 
@@ -160,6 +199,7 @@ ozonReadyButton.addEventListener(
 
       ozonReadyButton.disabled =
         false;
+
     }
 
   }
