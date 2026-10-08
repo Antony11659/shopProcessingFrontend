@@ -1,18 +1,32 @@
 const API_URL = window.API_URL;
 
-const params = new URLSearchParams(window.location.search);
-const isPrintingMode = params.get("mode") === "printing";
+const params =
+  new URLSearchParams(window.location.search);
 
-const shopSelect = document.querySelector("#shopSelect");
-const productsList = document.querySelector("#productsList");
+const isPrintingMode =
+  params.get("mode") === "printing";
 
-const statsCard = document.querySelector("#statsCard");
 
-const ozonCount = document.querySelector("#ozonCount");
-const mappedCount = document.querySelector("#mappedCount");
-const missingCount = document.querySelector("#missingCount");
+const shopSelect =
+  document.querySelector("#shopSelect");
 
-const backBtn = document.querySelector("#backBtn");
+const productsList =
+  document.querySelector("#productsList");
+
+const statsCard =
+  document.querySelector("#statsCard");
+
+const ozonCount =
+  document.querySelector("#ozonCount");
+
+const mappedCount =
+  document.querySelector("#mappedCount");
+
+const missingCount =
+  document.querySelector("#missingCount");
+
+const backBtn =
+  document.querySelector("#backBtn");
 
 
 let perfumes = [];
@@ -162,48 +176,103 @@ async function loadShops() {
 async function loadPrintingProducts() {
 
   productsList.innerHTML = `
-    <div class="empty-state">Проверяем SKU текущей партии...</div>
+    <div class="empty-state">
+      Проверяем SKU текущей партии...
+    </div>
   `;
 
-  document.querySelector(".section-header h2").textContent =
+
+  document.querySelector(
+    ".section-header h2"
+  ).textContent =
     "Неизвестные SKU текущей партии";
 
+
   try {
+
     const response = await fetch(
       `${API_URL}/ozon/print-sticking-labels`
     );
-    const result = await response.json();
+
+
+    const result =
+      await response.json();
+
 
     if (!response.ok) {
-      throw new Error(result.message || "Не удалось проверить SKU текущей партии");
+
+      throw new Error(
+        result.message ||
+        "Не удалось проверить SKU текущей партии"
+      );
     }
 
-    if (!Array.isArray(result.unknownProducts)) {
-      throw new Error("Не удалось получить неизвестные SKU текущей партии");
+
+    if (
+      !Array.isArray(
+        result.unknownProducts
+      )
+    ) {
+
+      throw new Error(
+        "Не удалось получить неизвестные SKU текущей партии"
+      );
     }
 
-    missingProducts = result.unknownProducts;
-    renderProducts(missingProducts);
+
+    missingProducts =
+      result.unknownProducts;
+
+
+    renderProducts(
+      missingProducts
+    );
+
+
   } catch (error) {
+
     productsList.innerHTML = `
-      <div class="error-state">${escapeHtml(error.message)}</div>
-      <button class="secondary-button" type="button" data-action="retry-printing">
+      <div class="error-state">
+        ${escapeHtml(error.message)}
+      </div>
+
+      <button
+        class="secondary-button"
+        type="button"
+        data-action="retry-printing"
+      >
         Повторить проверку
       </button>
     `;
   }
 }
 
+
+/* =====================================================
+   RESOLVE PRODUCT SHOP
+===================================================== */
+
 function resolveProductShopId(product) {
+
   if (!isPrintingMode) {
     return currentShopId;
   }
 
-  const shop = shops.find((item) => item.code === product.shop);
+
+  const shop =
+    shops.find(
+      (item) =>
+        item.code === product.shop
+    );
+
 
   if (!shop?.id) {
-    throw new Error(`Не удалось найти магазин для кода «${product.shop ?? ""}». SKU не привязан.`);
+
+    throw new Error(
+      `Не удалось найти магазин для кода «${product.shop ?? ""}». SKU не привязан.`
+    );
   }
+
 
   return shop.id;
 }
@@ -236,7 +305,8 @@ async function loadPerfumes() {
     }
 
 
-    perfumes = await response.json();
+    perfumes =
+      await response.json();
 
 
     return perfumes;
@@ -285,7 +355,8 @@ async function loadBrands() {
     }
 
 
-    brands = await response.json();
+    brands =
+      await response.json();
 
 
     return brands;
@@ -320,7 +391,9 @@ async function loadMissingProducts(shopId) {
   `;
 
 
-  statsCard.classList.add("hidden");
+  statsCard.classList.add(
+    "hidden"
+  );
 
 
   try {
@@ -330,7 +403,8 @@ async function loadMissingProducts(shopId) {
     );
 
 
-    const result = await response.json();
+    const result =
+      await response.json();
 
 
     if (!response.ok) {
@@ -346,7 +420,10 @@ async function loadMissingProducts(shopId) {
       result.missingProducts ?? [];
 
 
-    renderStats(result.stats);
+    renderStats(
+      result.stats
+    );
+
 
     renderProducts(
       missingProducts
@@ -401,24 +478,43 @@ function renderStats(stats) {
 function renderProducts(products) {
 
   if (isPrintingMode) {
-    document.querySelector(".section-header h2").textContent =
+
+    document.querySelector(
+      ".section-header h2"
+    ).textContent =
       `Неизвестные SKU текущей партии: ${products.length}`;
   }
+
 
   if (!products.length) {
 
     if (isPrintingMode) {
+
       productsList.innerHTML = `
         <div class="empty-state">
-          <strong>✓ Все SKU текущей партии привязаны</strong>
-          <p>Партия готова к печати.</p>
-          <button id="continuePrintBtn" class="primary-button" type="button">
-            ПРОДОЛЖИТЬ ПЕЧАТЬ
+
+          <strong>
+            ✓ Все SKU текущей партии привязаны
+          </strong>
+
+          <p>
+            Партия готова к печати.
+          </p>
+
+          <button
+            class="primary-button"
+            type="button"
+            data-action="start-printing"
+          >
+            НАЧАТЬ ПЕЧАТЬ
           </button>
+
         </div>
       `;
+
       return;
     }
+
 
     productsList.innerHTML = `
       <div class="empty-state">
@@ -430,53 +526,68 @@ function renderProducts(products) {
   }
 
 
-  productsList.innerHTML = products
-    .map((product) => `
-      <div
-        class="product-card"
-        data-sku="${escapeHtml(product.sku)}"
-      >
+  productsList.innerHTML =
+    products
+      .map((product) => `
+        <div
+          class="product-card"
+          data-sku="${escapeHtml(product.sku)}"
+        >
 
-        <div class="product-row">
+          <div class="product-row">
 
-          <div class="product-info">
+            <div class="product-info">
 
-            <div class="offer-id">
-              ${escapeHtml(product.offer_id)}
+              <div class="offer-id">
+                ${escapeHtml(product.offer_id)}
+              </div>
+
+              ${isPrintingMode ? `
+                <div>
+                  Магазин:
+                  ${escapeHtml(
+                    shops.find(
+                      (shop) =>
+                        shop.code === product.shop
+                    )?.name ??
+                    product.shop ??
+                    "Код не указан"
+                  )}
+
+                  ${
+                    product.quantity != null
+                      ? ` · Количество: ${escapeHtml(product.quantity)}`
+                      : ""
+                  }
+                </div>
+              ` : ""}
+
+              <div class="sku mobile-sku">
+                SKU ${escapeHtml(product.sku)}
+              </div>
+
             </div>
 
-            ${isPrintingMode ? `
-              <div>
-                Магазин: ${escapeHtml(shops.find((shop) => shop.code === product.shop)?.name ?? product.shop ?? "Код не указан")}
-                ${product.quantity != null ? ` · Количество: ${escapeHtml(product.quantity)}` : ""}
-              </div>
-            ` : ""}
-            <div class="sku mobile-sku">
+
+            <div class="sku desktop-sku">
               SKU ${escapeHtml(product.sku)}
             </div>
 
+
+            <button
+              class="map-button"
+              type="button"
+              data-action="open-map"
+              data-sku="${escapeHtml(product.sku)}"
+            >
+              Привязать
+            </button>
+
           </div>
-
-
-          <div class="sku desktop-sku">
-            SKU ${escapeHtml(product.sku)}
-          </div>
-
-
-          <button
-            class="map-button"
-            type="button"
-            data-action="open-map"
-            data-sku="${escapeHtml(product.sku)}"
-          >
-            Привязать
-          </button>
 
         </div>
-
-      </div>
-    `)
-    .join("");
+      `)
+      .join("");
 }
 
 
@@ -488,9 +599,10 @@ productsList.addEventListener(
   "click",
   async (event) => {
 
-    const button = event.target.closest(
-      "[data-action]"
-    );
+    const button =
+      event.target.closest(
+        "[data-action]"
+      );
 
 
     if (!button) {
@@ -501,10 +613,43 @@ productsList.addEventListener(
     const action =
       button.dataset.action;
 
-    if (isPrintingMode && action === "retry-printing") {
+
+    /* -------------------------------------------------
+       RETRY PRINTING CHECK
+    ------------------------------------------------- */
+
+    if (
+      isPrintingMode &&
+      action === "retry-printing"
+    ) {
+
       await loadPrintingProducts();
+
       return;
     }
+
+
+    /* -------------------------------------------------
+       START PRINTING
+    ------------------------------------------------- */
+
+    if (
+      isPrintingMode &&
+      action === "start-printing"
+    ) {
+
+      const isDev =
+        params.get("env") === "dev";
+
+
+      window.location.href = isDev
+        ? "./localPrint.html?env=dev"
+        : "./localPrint.html";
+
+
+      return;
+    }
+
 
     const sku =
       button.dataset.sku;
@@ -605,7 +750,8 @@ async function openMappingForm(sku) {
       ".mapping-form"
     )
     .forEach(
-      (form) => form.remove()
+      (form) =>
+        form.remove()
     );
 
 
@@ -617,7 +763,8 @@ async function openMappingForm(sku) {
 
   if (originalButton) {
 
-    originalButton.disabled = true;
+    originalButton.disabled =
+      true;
 
     originalButton.textContent =
       "Загрузка...";
@@ -630,6 +777,7 @@ async function openMappingForm(sku) {
 
 
     if (!perfumes.length) {
+
       requests.push(
         loadPerfumes()
       );
@@ -637,6 +785,7 @@ async function openMappingForm(sku) {
 
 
     if (!brands.length) {
+
       requests.push(
         loadBrands()
       );
@@ -655,14 +804,17 @@ async function openMappingForm(sku) {
 
     if (originalButton) {
 
-      originalButton.disabled = false;
+      originalButton.disabled =
+        false;
 
       originalButton.textContent =
         "Привязать";
     }
 
 
-    alert(error.message);
+    alert(
+      error.message
+    );
 
     return;
   }
@@ -670,7 +822,8 @@ async function openMappingForm(sku) {
 
   if (originalButton) {
 
-    originalButton.disabled = false;
+    originalButton.disabled =
+      false;
 
     originalButton.textContent =
       "Привязать";
@@ -678,7 +831,9 @@ async function openMappingForm(sku) {
 
 
   const mappingContainer =
-    document.createElement("div");
+    document.createElement(
+      "div"
+    );
 
 
   mappingContainer.className =
@@ -922,28 +1077,33 @@ function setupMappingForm(
 
       const filtered =
         perfumes
-          .filter((perfume) => {
+          .filter(
+            (perfume) => {
 
-            const name =
-              perfume.name
-                ?.toLowerCase() ??
-              "";
-
-
-            const brand =
-              perfume.brand
-                ?.name
-                ?.toLowerCase() ??
-              "";
+              const name =
+                perfume.name
+                  ?.toLowerCase() ??
+                "";
 
 
-            return (
-              name.includes(query) ||
-              brand.includes(query)
-            );
+              const brand =
+                perfume.brand
+                  ?.name
+                  ?.toLowerCase() ??
+                "";
 
-          })
-          .slice(0, 10);
+
+              return (
+                name.includes(query) ||
+                brand.includes(query)
+              );
+
+            }
+          )
+          .slice(
+            0,
+            10
+          );
 
 
       renderPerfumeResults(
@@ -1045,9 +1205,15 @@ function setupMappingForm(
 
         await createShopProduct({
           perfumeId,
-          shopId: resolveProductShopId(product),
+
+          shopId:
+            resolveProductShopId(
+              product
+            ),
+
           volume:
             Number(volume),
+
           sku:
             product.sku,
         });
@@ -1125,27 +1291,29 @@ function renderPerfumeResults(
 
   container.innerHTML =
     filtered
-      .map((perfume) => `
-        <button
-          class="perfume-option"
-          type="button"
-          data-perfume-id="${perfume.id}"
-        >
+      .map(
+        (perfume) => `
+          <button
+            class="perfume-option"
+            type="button"
+            data-perfume-id="${perfume.id}"
+          >
 
-          <strong>
-            ${escapeHtml(perfume.name)}
-          </strong>
+            <strong>
+              ${escapeHtml(perfume.name)}
+            </strong>
 
 
-          <span>
-            ${escapeHtml(
-              perfume.brand?.name ??
-              "Без бренда"
-            )}
-          </span>
+            <span>
+              ${escapeHtml(
+                perfume.brand?.name ??
+                "Без бренда"
+              )}
+            </span>
 
-        </button>
-      `)
+          </button>
+        `
+      )
       .join("");
 
 
@@ -1216,13 +1384,15 @@ function selectPerfume({
       Выберите объём
     </option>
 
-    ${variants.map(
-      (variant) => `
-        <option value="${variant.volume_ml}">
-          ${variant.volume_ml} мл
-        </option>
-      `
-    ).join("")}
+    ${variants
+      .map(
+        (variant) => `
+          <option value="${variant.volume_ml}">
+            ${variant.volume_ml} мл
+          </option>
+        `
+      )
+      .join("")}
   `;
 
 
@@ -1270,9 +1440,11 @@ function clearSelectedPerfume(
   `;
 
 
-  volumeSelect.disabled = true;
+  volumeSelect.disabled =
+    true;
 
-  submitButton.disabled = true;
+  submitButton.disabled =
+    true;
 }
 
 
@@ -1641,11 +1813,12 @@ function setupCreatePerfumeForm(
 
       try {
 
-        const shopId = resolveProductShopId(product);
+        const shopId =
+          resolveProductShopId(
+            product
+          );
 
-        /*
-         * 1. Create canonical perfume
-         */
+
         const perfume =
           await createPerfume({
             brandId,
@@ -1655,19 +1828,14 @@ function setupCreatePerfumeForm(
           });
 
 
-        /*
-         * 2. Keep local list updated
-         */
         perfumes.push(
           perfume
         );
 
 
-        /*
-         * 3. Map current Ozon SKU
-         */
         await createShopProduct({
           shopId,
+
           perfumeId:
             perfume.id,
 
@@ -1678,9 +1846,6 @@ function setupCreatePerfumeForm(
         });
 
 
-        /*
-         * 4. Remove it from unknown list
-         */
         await removeMappedProduct(
           product.sku
         );
@@ -1916,7 +2081,9 @@ async function createBrand(
   }
 
 
-  button.disabled = true;
+  button.disabled =
+    true;
+
 
   button.textContent =
     "Создаём...";
@@ -2002,7 +2169,8 @@ async function createBrand(
       brand.id;
 
 
-    container.innerHTML = "";
+    container.innerHTML =
+      "";
 
 
     container.classList.add(
@@ -2115,7 +2283,8 @@ function hideCreatePerfumeForm(
   }
 
 
-  container.innerHTML = "";
+  container.innerHTML =
+    "";
 
 
   container.classList.add(
@@ -2147,7 +2316,8 @@ function hideCreateBrandForm(
   }
 
 
-  container.innerHTML = "";
+  container.innerHTML =
+    "";
 
 
   container.classList.add(
@@ -2207,11 +2377,19 @@ async function removeMappedProduct(
 ) {
 
   if (isPrintingMode) {
-    const card = getProductCard(sku);
+
+    const card =
+      getProductCard(sku);
+
+
     card?.remove();
+
+
     await loadPrintingProducts();
+
     return;
   }
+
 
   missingProducts =
     missingProducts.filter(
@@ -2316,19 +2494,49 @@ function escapeHtml(
 async function init() {
 
   if (isPrintingMode) {
-    document.querySelector("#shopCard").classList.add("hidden");
-    document.querySelector(".header h1").textContent = "Проверка SKU перед печатью";
-    document.querySelector(".header p").textContent =
+
+    document
+      .querySelector(
+        "#shopCard"
+      )
+      .classList.add(
+        "hidden"
+      );
+
+
+    document.querySelector(
+      ".header h1"
+    ).textContent =
+      "Проверка SKU перед печатью";
+
+
+    document.querySelector(
+      ".header p"
+    ).textContent =
       "Товары текущей производственной партии нужно привязать к базе, чтобы продолжить печать.";
-    document.title = "Проверка SKU перед печатью";
+
+
+    document.title =
+      "Проверка SKU перед печатью";
+
+
     productsList.innerHTML = `
-      <div class="empty-state">Загружаем магазины текущей партии...</div>
+      <div class="empty-state">
+        Загружаем магазины текущей партии...
+      </div>
     `;
   }
 
-  const shopsLoaded = await loadShops();
 
-  if (isPrintingMode && shopsLoaded) {
+  const shopsLoaded =
+    await loadShops();
+
+
+  if (
+    isPrintingMode &&
+    shopsLoaded
+  ) {
+
     await loadPrintingProducts();
   }
 
